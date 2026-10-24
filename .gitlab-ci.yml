@@ -1,0 +1,12 @@
+build_apk:
+  image: mingc/android-build-box:latest
+  script:
+    - export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+    - yes | sdkmanager --licenses > /dev/null || true
+    - wget -q https://services.gradle.org/distributions/gradle-8.7-bin.zip -O /tmp/g.zip
+    - unzip -q /tmp/g.zip -d /opt
+    - /opt/gradle-8.7/bin/gradle assembleDebug --no-daemon
+  artifacts:
+    paths:
+      - app/build/outputs/apk/debug/app-debug.apk
+    expire_in: 1 week
